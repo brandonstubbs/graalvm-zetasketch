@@ -1,0 +1,16 @@
+# AMD64 image
+FROM ghcr.io/graalvm/graalvm-community:20.0.2-ol7-20230725@sha256:f07b0733cf905b58cc49ed6791d153df962d56efefda31e510ec72a30504d064
+
+RUN mkdir native
+WORKDIR /native
+
+COPY . /native
+
+# init gradle
+RUN ./gradlew
+
+# run jvm
+RUN ./gradlew run
+# run native
+RUN ./gradlew nativeCompile
+RUN ./gradlew nativeRun

@@ -1,0 +1,35 @@
+FROM arm64v8/ubuntu:22.04
+
+# Install tooling
+RUN set -ex; \
+    apt-get -qq update; \
+    apt-get -qqy install --no-install-recommends \
+      build-essential \
+      ca-certificates \
+      libz-dev \
+      zlib1g-dev \
+      wget \
+      tar;
+
+# Install GraalVM
+RUN set -ex; \
+    cd /tmp; \
+    wget https://download.oracle.com/graalvm/20/latest/graalvm-jdk-20_linux-aarch64_bin.tar.gz; \
+    tar -C /usr/lib -xzf graalvm-jdk-20_linux-aarch64_bin.tar.gz; \
+    rm -rf graalvm-jdk-20_linux-aarch64_bin.tar.gz;
+ENV PATH=$PATH:/usr/lib/graalvm-jdk-20.0.2+9.1/bin \
+    JAVA_HOME=/usr/lib/graalvm-jdk-20.0.2+9.1
+
+RUN mkdir native
+WORKDIR /native
+
+COPY . /native
+
+# init gradle
+RUN ./gradlew
+
+# run jvm
+RUN ./gradlew run
+# run native
+RUN ./gradlew nativeCompile
+RUN ./gradlew nativeRun
