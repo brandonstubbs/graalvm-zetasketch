@@ -25,13 +25,6 @@ java {
     }
 }
 
-graalvmNative {
-    binaries {
-        named("main") {
-            buildArgs.add("--initialize-at-build-time=com.google.zetasketch,com.google.protos.zetasketch")
-        }
-    }
-}
 
 application {
     mainClass.set("graalvm.zetasketch.App")

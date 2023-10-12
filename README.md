@@ -1,5 +1,10 @@
 ## Graalvm + Zetasketch Invalid Serialization Values
 
+NOTE: This is no longer failing with the committed native-image reflect-config.json
+
+
+
+
 This is a simple reproduction of serializing HyperLogLogPlusPlus data and
 deserializing it again.
 The docker files test the following:
